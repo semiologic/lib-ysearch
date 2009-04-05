@@ -93,7 +93,7 @@ class ysearch {
 		
 		$res = $res->resultset_web;
 		
-		if ( !$res->attributes()->totalhits ) {
+		if ( !intval($res->attributes()->totalhits) ) {
 			ysearch::set_cache($cache_id, time() + 86400, $xml); # 1 day
 			return false;
 		} else {
