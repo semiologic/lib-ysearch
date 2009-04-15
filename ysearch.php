@@ -111,7 +111,7 @@ class ysearch {
 	 * get_cache()
 	 *
 	 * @param string $cache_id
-	 * @return mixed $result string on cache hit, else string
+	 * @return mixed $result string on cache hit, else false
 	 **/
 
 	function get_cache($cache_id) {
