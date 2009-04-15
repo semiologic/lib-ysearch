@@ -59,7 +59,11 @@ class ysearch {
 	 * @return array of results
 	 **/
 
-	function query($appid, $s, $start = 0) {
+	function query($s, $start = 0) {
+		$app_id = get_option('ysearch');
+		
+		if ( !$app_id ) return false;
+		
 		$url = 'http://boss.yahooapis.com/ysearch/web/v1/';
 		$url .= rawurlencode($s);
 		
