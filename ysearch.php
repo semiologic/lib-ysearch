@@ -53,10 +53,9 @@ class ysearch {
 	/**
 	 * query()
 	 *
-	 * @param string $appid BOSS API Key
 	 * @param string $s search query
 	 * @param int $start start result
-	 * @return array of results
+	 * @return object $results
 	 **/
 
 	function query($s, $start = 0) {
@@ -75,25 +74,22 @@ class ysearch {
 		
 		$cache_id = md5($url);
 		
-		if ( $xml = ysearch::get_cache($cache_id) ) {
-			$res = new SimpleXMLElement($xml);
-		} else {
-			$xml = wp_remote_fopen($url);
-			
-			if ( !$xml ) {
-				return false;
-			}
-			
-			try {
-				$res = @ new SimpleXMLElement($xml);
-			} catch ( Exception $e ) {
-				return false;
-			}
-
-			if ( $res->attributes()->responsecode != 200 ) {
-				return false;
-			}
+		if ( $xml = ysearch::get_cache($cache_id) )
+			return new SimpleXMLElement($xml);
+		
+		$xml = wp_remote_fopen($url);
+		
+		if ( !$xml )
+			return false;
+		
+		try {
+			$res = @ new SimpleXMLElement($xml);
+		} catch ( Exception $e ) {
+			return false;
 		}
+
+		if ( $res->attributes()->responsecode != 200 )
+			return false;
 		
 		$res = $res->resultset_web;
 		
