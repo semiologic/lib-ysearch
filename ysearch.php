@@ -41,7 +41,7 @@ class ysearch {
 		}
 		
 		dbDelta("
-		CREATE TABLE ysearch (
+		CREATE TABLE $wpdb->ysearch (
 			id			char(32) PRIMARY KEY,
 			expires		datetime NOT NULL,
 			response	text NOT NULL DEFAULT '',
