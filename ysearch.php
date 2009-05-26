@@ -27,7 +27,7 @@ class ysearch {
 
 	function activate() {
 		if ( !function_exists('dbDelta') ) {
-			include ABSPATH . '/wp-admin/includes/upgrade.php';
+			include ABSPATH . 'wp-admin/includes/upgrade.php';
 		}
 		
 		global $wpdb;
