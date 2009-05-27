@@ -81,8 +81,13 @@ class ysearch {
 		if ( $xml = ysearch::get_cache($cache_id) ) {
 			try {
 				$res = @ new SimpleXMLElement($xml);
-				if ( $res && !ysearch_debug )
-					return $res;
+				if ( $res && !ysearch_debug ) {
+					if ( !intval((string) $res->attributes()->totalhits) ) {
+						return false;
+					} else {
+						return $res;
+					}
+				}
 			} catch ( Exception $e ) {
 			}
 		}
