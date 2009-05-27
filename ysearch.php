@@ -18,6 +18,9 @@ if ( defined('YSEARCH') ) {
 	$wpdb->ysearch = 'ysearch'; // share this across blogs by default
 }
 
+if ( !defined('ysearch_debug') )
+	define('ysearch_debug', false);
+
 class ysearch {
 	/**
 	 * activate()
@@ -74,7 +77,7 @@ class ysearch {
 		
 		$cache_id = md5($url);
 		
-		if ( $xml = ysearch::get_cache($cache_id) )
+		if ( $xml = ysearch::get_cache($cache_id) && !ysearch_debug )
 			return new SimpleXMLElement($xml);
 		
 		$xml = wp_remote_fopen($url);
