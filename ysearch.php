@@ -64,7 +64,8 @@ class ysearch {
 	function query($s, $start = 0) {
 		$appid = get_option('ysearch');
 		
-		if ( !$appid ) return false;
+		if ( !$appid )
+			return false;
 		
 		$url = 'http://boss.yahooapis.com/ysearch/web/v1/';
 		$url .= rawurlencode($s);
@@ -77,8 +78,14 @@ class ysearch {
 		
 		$cache_id = md5($url);
 		
-		if ( $xml = ysearch::get_cache($cache_id) && !ysearch_debug )
-			return new SimpleXMLElement($xml);
+		if ( $xml = ysearch::get_cache($cache_id) ) {
+			try {
+				$res = @ new SimpleXMLElement($xml);
+				if ( $res && !ysearch_debug )
+					return $res;
+			} catch ( Exception $e ) {
+			}
+		}
 		
 		$xml = wp_remote_fopen($url);
 		
@@ -96,7 +103,7 @@ class ysearch {
 		
 		$res = $res->resultset_web;
 		
-		if ( !intval($res->attributes()->totalhits) ) {
+		if ( !intval((string) $res->attributes()->totalhits) ) {
 			ysearch::set_cache($cache_id, time() + 86400, $xml); # 1 day
 			return false;
 		} else {
