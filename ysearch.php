@@ -21,6 +21,8 @@ if ( defined('YSEARCH') ) {
 if ( !defined('ysearch_debug') )
 	define('ysearch_debug', false);
 
+add_option('ysearch', '');
+
 class ysearch {
 	/**
 	 * activate()
