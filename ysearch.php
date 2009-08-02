@@ -11,18 +11,6 @@
  * @package Yahoo BOSS API
  **/
 
-global $wpdb;
-if ( defined('YSEARCH') ) {
-	$wpdb->ysearch = YSEARCH;
-} else {
-	$wpdb->ysearch = 'ysearch'; // share this across blogs by default
-}
-
-if ( !defined('ysearch_debug') )
-	define('ysearch_debug', false);
-
-add_option('ysearch', '');
-
 class ysearch {
 	/**
 	 * activate()
@@ -177,4 +165,16 @@ class ysearch {
 			");
 	} # set_cache()
 } # ysearch
+
+global $wpdb;
+if ( defined('YSEARCH') ) {
+	$wpdb->ysearch = YSEARCH;
+} else {
+	$wpdb->ysearch = 'ysearch'; // share this across blogs by default
+}
+
+if ( !defined('ysearch_debug') )
+	define('ysearch_debug', false);
+
+add_option('ysearch', '');
 ?>
