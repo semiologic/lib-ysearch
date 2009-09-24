@@ -2,7 +2,7 @@
 /*
  * Yahoo BOSS API
  * Author: Denis de Bernardy <http://www.mesoconcepts.com>
- * Version: 1.0
+ * Version: 1.1
 */
 
 /**
@@ -71,6 +71,9 @@ class ysearch {
 		if ( $xml = ysearch::get_cache($cache_id) ) {
 			try {
 				$res = @ new SimpleXMLElement($xml);
+				
+				$res = $res->resultset_web;
+				
 				if ( $res && !ysearch_debug ) {
 					if ( !intval((string) $res->attributes()->totalhits) ) {
 						return false;
