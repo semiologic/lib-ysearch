@@ -2,7 +2,7 @@
 /*
  * Yahoo BOSS API
  * Author: Denis de Bernardy <http://www.mesoconcepts.com>
- * Version: 1.1
+ * Version: 1.1.1 beta
 */
 
 /**
@@ -124,7 +124,7 @@ class ysearch {
 		$res = $wpdb->get_row("
 			SELECT	*
 			FROM	$wpdb->ysearch
-			WHERE	id = '" . $wpdb->escape($cache_id) . "'
+			WHERE	id = '" . $wpdb->_real_escape($cache_id) . "'
 			");
 		
 		if ( !$res )
@@ -133,7 +133,7 @@ class ysearch {
 		if ( strtotime($res->expires) < time() ) {
 			$wpdb->query("
 				DELETE FROM $wpdb->ysearch
-				WHERE	expires < '" . $wpdb->escape(date('Y-m-d H:i:s')) . "'
+				WHERE	expires < '" . $wpdb->_real_escape(date('Y-m-d H:i:s')) . "'
 				");
 			return false;
 		} else {
@@ -161,9 +161,9 @@ class ysearch {
 				response
 				)
 			VALUES (
-				'" . $wpdb->escape($cache_id) . "',
-				'" . $wpdb->escape(date('Y-m-d H:i:s', $expires)) . "',
-				'" . $wpdb->escape($xml) . "'
+				'" . $wpdb->_real_escape($cache_id) . "',
+				'" . $wpdb->_real_escape(date('Y-m-d H:i:s', $expires)) . "',
+				'" . $wpdb->_real_escape($xml) . "'
 				);
 			");
 	} # set_cache()
