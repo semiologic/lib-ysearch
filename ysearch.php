@@ -2,7 +2,7 @@
 /*
  * Yahoo BOSS API
  * Author: Denis de Bernardy <http://www.mesoconcepts.com>
- * Version: 1.1.1 beta
+ * Version: 1.1.1
 */
 
 /**
