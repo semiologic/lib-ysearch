@@ -2,7 +2,7 @@
 /*
  * Yahoo BOSS API
  * Author: Denis de Bernardy <http://www.mesoconcepts.com>
- * Version: 1.1.1
+ * Version: 1.2
 */
 
 /**
@@ -52,7 +52,7 @@ class ysearch {
 	 **/
 
 	function query($s, $start = 0) {
-		$appid = get_option('ysearch');
+		$appid = get_site_option('ysearch');
 		
 		if ( !$appid )
 			return false;
@@ -179,5 +179,6 @@ if ( defined('YSEARCH') ) {
 if ( !defined('ysearch_debug') )
 	define('ysearch_debug', false);
 
-add_option('ysearch', '');
+if ( get_site_option('ysearch') === false )
+	update_site_option('ysearch', '');
 ?>
