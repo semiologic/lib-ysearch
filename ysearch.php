@@ -180,5 +180,5 @@ if ( !defined('ysearch_debug') )
 	define('ysearch_debug', false);
 
 if ( get_site_option('ysearch') === false )
-	update_site_option('ysearch', '');
+	update_site_option('ysearch', get_option('ysearch') ? get_option('ysearch') : '');
 ?>
