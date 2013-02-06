@@ -2,7 +2,7 @@
 /*
  * Yahoo BOSS API
  * Author: Denis de Bernardy <http://www.mesoconcepts.com>
- * Version: 1.2
+ * Version: 1.2.1
 */
 
 /**
@@ -18,28 +18,31 @@ class ysearch {
 	 * @return void
 	 **/
 
-	function activate() {
+	static function activate() {
 		if ( !function_exists('dbDelta') ) {
 			include ABSPATH . 'wp-admin/includes/upgrade.php';
 		}
 		
 		global $wpdb;
-		$charset_collate = '';
 
-		if ( $wpdb->has_cap( 'collation' ) ) {
-			if ( ! empty($wpdb->charset) )
-				$charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
-			if ( ! empty($wpdb->collate) )
-				$charset_collate .= " COLLATE $wpdb->collate";
-		}
-		
-		dbDelta("
-		CREATE TABLE $wpdb->ysearch (
-			id			char(32) PRIMARY KEY,
-			expires		datetime NOT NULL,
-			response	text NOT NULL DEFAULT '',
-			INDEX ysearch_expires ( expires )
-		) $charset_collate;");
+        if($wpdb->get_var("show tables like 'ysearch'") != 'ysearch') {
+            $charset_collate = '';
+
+            if ( $wpdb->has_cap( 'collation' ) ) {
+                if ( ! empty($wpdb->charset) )
+                    $charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
+                if ( ! empty($wpdb->collate) )
+                    $charset_collate .= " COLLATE $wpdb->collate";
+            }
+
+            dbDelta("
+            CREATE TABLE $wpdb->ysearch (
+                id			char(32) PRIMARY KEY,
+                expires		datetime NOT NULL,
+                response	text NOT NULL DEFAULT '',
+                INDEX ysearch_expires ( expires )
+            ) $charset_collate;");
+        }
 	} # activate()
 	
 	
@@ -51,13 +54,14 @@ class ysearch {
 	 * @return object $results
 	 **/
 
-	function query($s, $start = 0) {
+	static function query($s, $start = 0) {
 		$appid = get_site_option('ysearch');
 		
 		if ( !$appid )
 			return false;
 		
-		$url = 'http://boss.yahooapis.com/ysearch/web/v1/';
+//		$url = 'http://boss.yahooapis.com/ysearch/web/v1/';
+        $url = 'http://yboss.yahooapis.com/ysearch/web?q=';
 		$url .= rawurlencode($s);
 		
 		$url .= '?count=10';
@@ -118,7 +122,7 @@ class ysearch {
 	 * @return mixed $result string on cache hit, else false
 	 **/
 
-	function get_cache($cache_id) {
+	static function get_cache($cache_id) {
 		global $wpdb;
 		
 		$res = $wpdb->get_row("
@@ -151,7 +155,7 @@ class ysearch {
 	 * @return void
 	 **/
 
-	function set_cache($cache_id, $expires, $xml) {
+	static function set_cache($cache_id, $expires, $xml) {
 		global $wpdb;
 		
 		$wpdb->query("
